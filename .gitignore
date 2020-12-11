@@ -1,0 +1,11 @@
+**/work
+.*.sw*
+.bak
+.nfs*
+*.wlf
+transcript
+*.txt
+*.sav
+*.q*
+_*
+wave.do

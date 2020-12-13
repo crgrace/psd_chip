@@ -15,16 +15,16 @@
 ///////////////////////////////////////////////////////////////////
 
 module uart 
-   (output logic piso,                      // output from chip
+   (output logic piso,             // output from chip
     output logic [7:0] write_addr, // write addr from RAM to UART
     output logic [7:0] write_data, // RAM data from UART_RX
     output logic [7:0] read_addr,  // read addr from RAM to UART
     output logic write,            // high to write to RAM
     output logic read,             // high to read from RAM
-    input logic posi,                       // input to current chip
-    input logic [7:0] read_data,         // data read from regfile
-    input logic clk,                        // controlling clk
-    input logic reset_n);        // asynchronous digital reset (active low)   
+    input logic posi,              // input to current chip
+    input logic [7:0] read_data,   // data read from regfile
+    input logic clk,               // controlling clk
+    input logic reset_n);          // asynchronous reset (active low)   
 
 // local signals
 
@@ -35,25 +35,25 @@ enum logic [2:0] {IDLE                  = 3'h0,
                 WRITE                   = 3'h4,
                 READ                    = 3'h5} State, Next;
 
-logic [17:0] finished_packet; // packet to send off chip (includes parity)
-logic [3:0] txclk_counter;  // tx clk is 1/16 rx clk speed 
-logic [16:0] output_packet; // packet without parity bit 
-logic ld_tx_data; // high to transfer data to tx uart
-logic tx_busy;    // high if tx uart sending data
-logic uld_rx_data;  // clear (unload) rx uart data
-logic [17:0] rx_data;  // data from rx_uart
-logic rx_empty;  // high if no data waiting in rx uart
+logic [17:0] finished_packet;   // packet to send off chip (includes parity)
+logic [3:0] txclk_counter;      // tx clk is 1/16 rx clk speed 
+logic [16:0] output_packet;     // packet without parity bit 
+logic ld_tx_data;               // high to transfer data to tx uart
+logic tx_busy;                  // high if tx uart sending data
+logic uld_rx_data;              // clear (unload) rx uart data
+logic [17:0] rx_data;           // data from rx_uart
+logic rx_empty;                 // high if no data waiting in rx uart
 
 // fsm signals
-logic [1:0] write_counter;        // 2 clks to write
-logic [4:0] read_counter;   // need to hold ld_tx_data 16 clk cycles
+logic [1:0] write_counter;      // 2 clks to write
+logic [4:0] read_counter;       // need to hold ld_tx_data 16 clk cycles
 
 // calculate parity
 always_comb begin
     finished_packet = {~^output_packet,output_packet};
 end // always_comb
 
-// generate tx uart clock (double period of clk)
+// generate tx uart clock (external clock / 16)
 always_ff @(posedge clk or negedge reset_n) begin
     if (!reset_n) begin
         txclk_counter <= 4'b0;

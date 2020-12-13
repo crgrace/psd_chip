@@ -12,7 +12,7 @@ switch $SIM_LEVEL {
     do {compile_src.do}
 # run vsim
     ### for code coverage ###
-    vsim -coverage -voptargs="+cover=bcfst" -L tsmc_cl018g_rvt_neg -L tsmc18_cg_neg -suppress 12027 external_interface_tb  -vopt -voptargs="+acc" -sv_seed random
+    vsim -coverage -voptargs="+cover=bcfst" -L tsmc_cl018g_rvt_neg -L tsmc18_cg_neg -suppress 12027 digital_core_tb  -vopt -voptargs="+acc" -sv_seed random
     ### for simulation ###
  #   vsim -L tsmc_cl018g_rvt_neg -L tsmc18_cg_neg -suppress 12027 external_interface_tb  -vopt -voptargs="+acc -xprop,mode=resolve" -sv_seed random
   }
@@ -20,7 +20,7 @@ switch $SIM_LEVEL {
   post_par {
     do {compile_postpar.do}
 
-   vsim -coverage -L rf2p_512x64_4_50 -L tsmc_cl018g_rvt_neg -L tsmc18_cg_neg -suppress 12027 larpix_single_tb -sv_seed random\
+   vsim -coverage -L rf2p_512x64_4_50 -L tsmc_cl018g_rvt_neg -L tsmc18_cg_neg -suppress 12027 digital_core_tb -sv_seed random\
         -sdfnoerror -vopt -voptargs="+acc -xprop,mode=resolve" -sdftyp :larpix_single_tb:larpix_v2b_inst:digital_core_inst=[pwd]/../par/digital_core.signoff.sdf \
             -sdftyp :larpix_single_tb:larpix_v2b_inst:digital_core_inst=[pwd]/../par/digital_core.signoff.sdf 
 

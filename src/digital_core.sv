@@ -49,6 +49,10 @@ module digital_core
     output logic sel_std_sout_comp_width, // high for std width
     output logic [7:0] tunable_res_total_int, // adjust resistor value
     output logic [7:0] tunable_res_subtr_gain, // adjust resistor value
+    output logic [2:0] digital_testbus0_sel, // select signal to testbus0
+    output logic digital_testbus0_en, // enable testbus0
+    output logic [2:0] digital_testbus1_sel, // select signal to testbus1
+    output logic digital_testbus1_en, // enable testbus1
     output logic [3:0] external_trigger_enable, // high to en ext trig
     output logic [3:0] cross_trigger_enable, // high to en cross trig
     output logic [7:0] current_monitor, // measure internal currents
@@ -97,6 +101,10 @@ always_comb begin
     i_bias_lvds = config_bits[IBIAS_LVDS][3:0];
     tunable_res_total_int = config_bits[TUNABLE_RES_TOTAL_INT][7:0];
     tunable_res_subtr_gain = config_bits[TUNABLE_RES_SUBTR_GAIN][7:0];
+    digital_testbus0_sel = config_bits[DIGITAL_TESTBUS][2:0];
+    digital_testbus0_en = config_bits[DIGITAL_TESTBUS][3];
+    digital_testbus1_sel = config_bits[DIGITAL_TESTBUS][6:4];
+    digital_testbus1_en = config_bits[DIGITAL_TESTBUS][7];
     external_trigger_enable = config_bits[TRIGGER][3:0];
     cross_trigger_enable = config_bits[TRIGGER][7:4];
     current_monitor = config_bits[IMONITOR][7:0];

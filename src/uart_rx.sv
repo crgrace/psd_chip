@@ -64,7 +64,7 @@ always_ff @ (posedge rxclk or negedge reset_n) begin
             // Logic to sample at middle of data
             // makes sure we don't start based on runt start bit
             if (rx_sample_cnt == 4'd7) begin
-                if ((rx_d2 == 1'b1) && (rx_cnt == 1'b0)) begin
+                if ((rx_d2 == 1'b1) && (rx_cnt == 8'b0)) begin
                     rx_busy <= 1'b0;
                 end 
                 else begin

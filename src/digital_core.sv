@@ -135,8 +135,6 @@ always_comb begin
     spare1 = config_bits[SPARE1][7:0];
 end // always_comb
 
-
-
 external_interface
     #(.NUMREGS(NUMREGS)
     ) external_interface_inst (

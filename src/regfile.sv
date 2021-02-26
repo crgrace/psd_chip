@@ -16,6 +16,7 @@ module regfile
     input logic [7:0] read_addr,            // RAM read address 
     input logic write,                      // high for write op
     input logic read,                       // high for read op
+    input logic clk,                        // system clock
     input logic reset_n                     // digital reset (active low)
 );
 
@@ -25,25 +26,19 @@ module regfile
 //vlog +incdir+../testbench/psd_chip/ -incr -sv "../src/digital_core.sv"
 `include "psd_chip_constants.sv"
 
-always_ff @(posedge read or negedge reset_n) begin
+always_ff @(posedge clk or negedge reset_n) begin
     if (!reset_n) begin
         read_data <= 8'b0;
-    end 
-    else begin
-        read_data <= config_bits[read_addr];
-    end    // else
-end // always_ff
-
-always_ff @(posedge write or negedge reset_n) begin
-    if (!reset_n) begin
         // SET DEFAULTS
-        for (int i = 0; i < NUMREGS; i++) begin
-            config_bits[i] = 8'h0;
-        end // for 
-//`include "config_regfile_assign.sv" // in ../testbench/larpix_tasks
+`include "regfile_assign.sv"
     end 
     else begin
-        config_bits[write_addr] <= write_data;
+        if (write) begin       
+            config_bits[write_addr] <= write_data;
+        end // write
+        if (read) begin
+            read_data <= config_bits[read_addr];
+        end // write
     end    // else
 end // always_ff
 

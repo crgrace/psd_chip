@@ -53,15 +53,34 @@ always_comb begin
     finished_packet = {~^output_packet,output_packet};
 end // always_comb
 
-// generate tx uart clock (external clock / 16)
-always_ff @(posedge clk or negedge reset_n) begin
-    if (!reset_n) begin
-        txclk_counter <= 4'b0;
-    end
-    else begin
-        txclk_counter <= txclk_counter + 1'b1;;
-    end
-end // always_ff
+// ripple-carry counter to generate tx clock
+tff
+    tff_inst_0 (
+    .q          (txclk_counter[0]),
+    .clk        (clk),
+    .reset_n    (reset_n)
+    );
+
+tff
+    tff_inst_1 (
+    .q          (txclk_counter[1]),
+    .clk        (txclk_counter[0]),
+    .reset_n    (reset_n)
+    );
+
+tff
+    tff_inst_2 (
+    .q          (txclk_counter[2]),
+    .clk        (txclk_counter[1]),
+    .reset_n    (reset_n)
+    );
+
+tff
+    tff_inst_3 (
+    .q          (txclk_counter[3]),
+    .clk        (txclk_counter[2]),
+    .reset_n    (reset_n)
+    );
 
 always_ff @(posedge clk or negedge reset_n) begin
     if (!reset_n) State <= IDLE;
@@ -140,7 +159,8 @@ always_ff @(posedge clk or negedge reset_n) begin
                                     read <= 1'b1;
                                     read_counter <= read_counter + 1'b1;
                                 end
-            endcase
+            default:            ;
+       endcase
     end
 end // case
         

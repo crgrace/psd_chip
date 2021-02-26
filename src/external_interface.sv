@@ -40,6 +40,7 @@ regfile
     .read_addr              (read_addr),
     .write                  (write),   
     .read                   (read),
+    .clk                    (clk),
     .reset_n                (reset_n)
     );
 

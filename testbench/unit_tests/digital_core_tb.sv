@@ -86,8 +86,6 @@ logic piso;     // output from current chip (input to FPGA)
 logic posi;     // input to current chip (output from FPGA)
 logic posi_tx;     // (output from FPGA)
 logic posi_tx_en; // high to enable posi
-// regfile variables
-logic [7:0] config_bits [0:NUMREGS-1]; // output bits
 
 // external FPGA signals
 logic txclk_fpga; // clock used to define data sent to PSD_CHIP
@@ -115,7 +113,7 @@ initial begin
     verbose = FALSE;
     reset_n = 1;
     clk_free_running = 0;
-    txclk_fpga = 0;
+    txclk_fpga = 1;
     ld_tx_data_fpga = 0;
     receivedData = 0;
     uld_rx_data_fpga = 1'b0;
@@ -123,14 +121,11 @@ initial begin
     posi_tx_en = 1;
     clk_en = 0;
 // reset DUT
-    #10 reset_n = 0;
+    #100 reset_n = 0;
     #100 reset_n = 1;
-    
-//    regfileOpUART(WRITE,8'h01,8'hab);
-
-//#2000 regfileOpUART(READ,8'h01,8'h00);
-//    testExternalInterfaceUART(8'hab);
-#1000      randomTestExternalInterface(10000);
+//    #100 clk_en = 0;
+#1000   isDefaultConfig();
+#1000      randomTestExternalInterface(1000);
 
 // test RX rejection of run start bit
     #1000 clk_en = 1;

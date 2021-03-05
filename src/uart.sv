@@ -122,6 +122,8 @@ always_ff @(posedge clk or negedge reset_n) begin
         uld_rx_data <= 1'b0;
         write_counter <= 2'b0;
         read_counter <= 5'b0;
+        read <= 1'b0;
+        write <= 1'b0;        
     end 
     else begin
         uld_rx_data <= 1'b0;

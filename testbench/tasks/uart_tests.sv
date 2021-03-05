@@ -33,26 +33,62 @@ begin
 end
 endfunction
 
-task isDefaultConfig
-    (output isDefault);
+task isDefaultConfig();
 logic [7:0] config_default [0:NUMREGS-1]; // default scoreboard 
 integer errors;
 logic debug;
 begin
     errors = 0;
     debug = FALSE;
-    config_default[0] = 8'h52;      
-    config_default[1] = 8'h00;      
-    config_default[2] = 8'h00;      
-    config_default[3] = 8'h00;      
-    config_default[4] = 8'h33;      
-    config_default[5] = 8'h33;      
-    config_default[6] = 8'h33;      
+    config_default[0] = 8'hF0;      
+    config_default[1] = 8'h07;      
+    config_default[2] = 8'h77;      
+    config_default[3] = 8'h77;      
+    config_default[4] = 8'h77;      
+    config_default[5] = 8'h77;      
+    config_default[6] = 8'h8E;      
+    config_default[7] = 8'h70;      
+    config_default[8] = 8'h81;      
+    config_default[9] = 8'h81;      
+    config_default[10] = 8'h81;      
+    config_default[11] = 8'h81;      
+    config_default[12] = 8'h07;      
+    config_default[13] = 8'hF2;      
+    config_default[14] = 8'hF2;      
+    config_default[15] = 8'hF2;      
+    config_default[16] = 8'hF2;      
+    config_default[17] = 8'h02;      
+    config_default[18] = 8'h1C;      
+    config_default[19] = 8'h1C;      
+    config_default[20] = 8'h1C;      
+    config_default[21] = 8'h1C;      
+    config_default[22] = 8'h10;      
+    config_default[23] = 8'h15;      
+    config_default[24] = 8'h19;      
+    config_default[25] = 8'h1B;      
+    config_default[26] = 8'h19;      
+    config_default[27] = 8'h19;      
+    config_default[28] = 8'h19;      
+    config_default[29] = 8'h00;      
+    config_default[30] = 8'h10;      
+    config_default[31] = 8'h01;      
+    config_default[32] = 8'h20;      
+    config_default[33] = 8'h28;      
+    config_default[34] = 8'h30;      
+    config_default[35] = 8'h38;      
+    config_default[36] = 8'h30;      
+    config_default[37] = 8'h00;      
+    config_default[38] = 8'h00;      
+    config_default[39] = 8'h00;      
+    config_default[40] = 8'h00;      
+    config_default[41] = 8'h00;      
 
+    $display("Test: isDefaultConfig");
+  //  regfileOpUART(READ,0,0); // loop through registers
+  //  regfileOpUART(WRITE,0,8'hF0); // loop through registers
+  //  regfileOpUART(READ,0,0); // loop through registers
 
     for (int i = 0; i < NUMREGS; i++) begin
-// comment out for top level sim
-//        regfileOpI2C(READ,i+128,0,readback); // config map starts at loc 128
         regfileOpUART(READ,i,0); // loop through registers
         if (debug) begin
                 $display("isDefaultConfig: DEBUG\n");
@@ -64,8 +100,8 @@ begin
             errors = errors + 1;
         end // assert
     end // for
-    isDefault = (errors) ? FALSE : TRUE;
-    $display("load_config_defaults verification complete. %0d errors.",errors);
+    regfileOpUART(READ,0,0); // loop through registers
+    $display("Config default verification complete. %0d errors.",errors);
 end
 endtask // isDefaultConfig
 
